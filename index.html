@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💎 Mines Premium</title>
+    <!-- Подключаем скрипт Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 20px;
+            background-color: #1e1e1e;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+            user-select: none;
+        }
+        .balance { font-size: 32px; font-weight: bold; color: #00FF00; margin-bottom: 20px; text-shadow: 0 0 10px rgba(0,255,0,0.5); }
+        .settings { display: flex; gap: 15px; margin-bottom: 20px; width: 100%; max-width: 400px; }
+        .input-group { display: flex; flex-direction: column; flex: 1; }
+        .input-group label { font-size: 14px; color: #aaa; margin-bottom: 5px; }
+        .input-group input {
+            background: #333; border: 1px solid #555; color: white;
+            padding: 10px; border-radius: 8px; font-size: 16px; outline: none;
+        }
+        .input-group input:focus { border-color: #00FF00; }
+        .input-group input:disabled { opacity: 0.5; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px; width: 100%; max-width: 400px;
+            margin-bottom: 20px;
+        }
+        .cell {
+            background: #2b2b2b; border: none; border-radius: 12px;
+            aspect-ratio: 1; font-size: 28px; cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .cell:hover:not(:disabled) { background: #3b3b3b; }
+        .cell:active:not(:disabled) { transform: scale(0.95); }
+        .cell:disabled { cursor: not-allowed; }
+        .cell.diamond { background: #005500; }
+        .cell.bomb { background: #FF0000; }
+        
+        .info { font-size: 18px; font-weight: bold; color: #FFAA00; margin-bottom: 20px; text-align: center; height: 24px; }
+        
+        .controls { display: flex; gap: 15px; width: 100%; max-width: 400px; }
+        .btn {
+            flex: 1; padding: 15px; border: none; border-radius: 12px;
+            font-size: 18px; font-weight: bold; cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn:active:not(:disabled) { transform: scale(0.95); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-start { background: #00AA00; color: white; }
+        .btn-cashout { background: #FFAA00; color: black; }
+    </style>
+</head>
+<body>
+
+    <div class="balance" id="balance">💰 10,000 ₽</div>
+
+    <div class="settings">
+        <div class="input-group">
+            <label>Ставка (₽)</label>
+            <input type="number" id="bet" value="100">
+        </div>
+        <div class="input-group">
+            <label>Мин (1-24)</label>
+            <input type="number" id="mines" value="3" min="1" max="24">
+        </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="info" id="info">Сделайте ставку и нажмите 'Играть'</div>
+
+    <div class="controls">
+        <button class="btn btn-start" id="btnStart" onclick="startGame()">▶ ИГРАТЬ</button>
+        <button class="btn btn-cashout" id="btnCashout" onclick="cashOut()" disabled>💸 ЗАБРАТЬ</button>
+    </div>
+
+    <script>
+        // Инициализация Telegram
+        let tg = window.Telegram.WebApp;
+        if (tg) tg.expand();
+
+        // Переменные игры
+        let balance = 10000;
+        let bet = 100;
+        let minesCount = 3;
+        let board = [];
+        let opened = [];
+        let gameActive = false;
+        let multiplier = 1.0;
+        let currentWin = 0;
+
+        const TOTAL_CELLS = 25;
+        const gridEl = document.getElementById('grid');
+        const balanceEl = document.getElementById('balance');
+        const infoEl = document.getElementById('info');
+        const betInput = document.getElementById('bet');
+        const minesInput = document.getElementById('mines');
+        const btnStart = document.getElementById('btnStart');
+        const btnCashout = document.getElementById('btnCashout');
+
+        // Создаем кнопки поля
+        for (let i = 0; i < TOTAL_CELLS; i++) {
+            let btn = document.createElement('button');
+            btn.className = 'cell';
+            btn.onclick = () => revealCell(i);
+            gridEl.appendChild(btn);
+        }
+        const cells = document.querySelectorAll('.cell');
+
+        function updateBalance() {
+            balanceEl.textContent = `💰 ${balance.toLocaleString('ru-RU')} ₽`;
+        }
+
+        function startGame() {
+            bet = parseFloat(betInput.value);
+            minesCount = parseInt(minesInput.value);
+
+            if (isNaN(bet) || bet <= 0 || bet > balance) {
+                alert("Недостаточно средств или неверная ставка!"); return;
+            }
+            if (isNaN(minesCount) || minesCount < 1 || minesCount > 24) {
+                alert("Мины от 1 до 24!"); return;
+            }
+
+            balance -= bet;
+            updateBalance();
+
+            // Сброс поля
+            board = new Array(TOTAL_CELLS).fill(false);
+            opened = new Array(TOTAL_CELLS).fill(false);
+            multiplier = 1.0;
+            gameActive = true;
+
+            // Расстановка мин
+            let placed = 0;
+            while (placed < minesCount) {
+                let pos = Math.floor(Math.random() * TOTAL_CELLS);
+                if (!board[pos]) {
+                    board[pos] = true;
+                    placed++;
+                }
+            }
+
+            // Сброс UI
+            cells.forEach(btn => {
+                btn.textContent = '';
+                btn.className = 'cell';
+                btn.disabled = false;
+            });
+            
+            betInput.disabled = true;
+            minesInput.disabled = true;
+            btnStart.disabled = true;
+            btnCashout.disabled = false;
+            infoEl.textContent = `Ставка: ${bet} ₽ | Множитель: x${multiplier.toFixed(2)}`;
+            infoEl.style.color = '#00FF00';
+        }
+
+        function revealCell(index) {
+            if (!gameActive || opened[index]) return;
+            opened[index] = true;
+
+            let btn = cells[index];
+
+            if (board[index]) {
+                // Взрыв
+                btn.textContent = '💣';
+                btn.className = 'cell bomb';
+                gameOver(false);
+            } else {
+                // Алмаз
+                btn.textContent = '💎';
+                btn.className = 'cell diamond';
+
+                // Формула множителя (как в Java коде)
+                let safeCells = TOTAL_CELLS - minesCount;
+                let baseStep = 1 + (minesCount / TOTAL_CELLS) * 1.5;
+                multiplier *= baseStep;
+                currentWin = bet * multiplier;
+
+                infoEl.textContent = `Ставка: ${bet} ₽ | Множитель: x${multiplier.toFixed(2)} | Выигрыш: ${currentWin.toFixed(0)} ₽`;
+
+                // Если открыли всё
+                let openedCount = opened.filter(v => v).length;
+                if (openedCount === safeCells) cashOut();
+            }
+        }
+
+        function cashOut() {
+            if (!gameActive) return;
+
+            balance += currentWin;
+            updateBalance();
+
+            // Показываем все карты
+            for (let i = 0; i < TOTAL_CELLS; i++) {
+                if (board[i]) {
+                    cells[i].textContent = '💣';
+                    cells[i].className = 'cell bomb';
+                } else if (cells[i].textContent === '') {
+                    cells[i].textContent = '💎';
+                    cells[i].className = 'cell';
+                }
+                cells[i].disabled = true;
+            }
+
+            gameOver(true);
+        }
+
+        function gameOver(win) {
+            gameActive = false;
+            betInput.disabled = false;
+            minesInput.disabled = false;
+            btnStart.disabled = false;
+            btnCashout.disabled = true;
+
+            if (win) {
+                infoEl.textContent = `🎉 Вы забрали ${currentWin.toFixed(0)} ₽!`;
+                infoEl.style.color = '#FFFF00';
+            } else {
+                infoEl.textContent = `💥 Вы попали на мину! Потеряно: ${bet} ₽`;
+                infoEl.style.color = '#FF0000';
+            }
+
+            if (balance <= 0) {
+                setTimeout(() => alert("Вы банкрот!"), 100);
+            }
+        }
+
+        // Первичная инициализация
+        updateBalance();
+    </script>
+</body>
+</html>
