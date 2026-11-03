@@ -19,20 +19,15 @@
     display:flex; gap:15px; padding:15px;
     min-height:100vh; justify-content:center; align-items:flex-start;
     touch-action:manipulation;
+    position: relative; z-index: 1;
   }
 
   /* Космический фон */
   #space-canvas {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: 0;
+    z-index: -1;
     pointer-events: none;
-  }
-
-  /* Поднимаем интерфейс над космосом */
-  .left, .right {
-    position: relative;
-    z-index: 1;
   }
 
   .left{width:360px; flex-shrink:0; background:var(--panel); border-radius:15px; padding:12px;}
@@ -49,7 +44,6 @@
     filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.4));
   }
 
-  /* Анимация искры */
   @keyframes spark {
     0% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.3); opacity: 1; filter: brightness(1.5); }
@@ -145,6 +139,9 @@
   }
   .cell.dead{cursor:default;} .cell.safe{cursor:default;}
 
+  /* ============================================================= */
+  /* ПЛАНШЕТ: 700–1100px                                            */
+  /* ============================================================= */
   @media (max-width:1100px){
     .left{width:300px;}
     h1{font-size:28px;}
@@ -154,25 +151,56 @@
     .cell{width:58px; height:58px; border-radius:12px;}
   }
 
+  /* ============================================================= */
+  /* ТЕЛЕФОН: <700px (Точная копия макета)                          */
+  /* ============================================================= */
   @media (max-width:700px){
-    body{flex-direction:column; align-items:stretch; gap:10px; padding:10px;}
-    .right{order:1; gap:10px;}
-    .left{order:2; width:100%; max-width:none; padding:12px;}
-    h1{font-size:26px; margin:4px 0 10px;}
-    .balance-box{padding:6px;}
-    .balance-box .val{font-size:22px;}
-    input[type=number]{font-size:18px;}
-    .btn{min-height:44px; font-size:14px;}
-    .actions .btn{min-height:52px; font-size:16px;}
-    .actions .auto{flex:0 0 70px; font-size:12px;}
-    .mult{gap:3px; padding:6px;}
-    .mult .m{font-size:10.5px; padding:6px 1px; letter-spacing:-.2px;}
-    .stats{flex-wrap:wrap; gap:4px;}
-    .stats > div{flex:1 1 30%; font-size:12px; padding:4px 0;}
-    .field{padding:10px; border-radius:20px; width:100%;}
-    .grid{grid-template-columns:repeat(5, 1fr); gap:6px; width:100%;}
-    .cell{width:100%; height:auto; aspect-ratio:1/1; border-radius:12px;}
-    .history{height:130px;}
+    body {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 10px;
+      padding-top: 15px;
+    }
+
+    /* Магия: заставляем обертки исчезнуть, 
+       чтобы управлять порядком всех карточек напрямую */
+    .left, .right {
+      display: contents;
+    }
+
+    /* Выстраиваем элементы в нужном порядке */
+    h1 { order: 1; margin: 0 0 5px 0; font-size: 28px; }
+    .mult { order: 2; padding: 6px; gap: 4px; }
+    .stats { order: 3; padding: 8px; }
+    .field { order: 4; padding: 10px; border-radius: 18px; width: 100%; }
+    .actions { order: 5; margin: 0; gap: 8px; }
+    .balance-box { order: 6; margin: 0; background: var(--panel); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; }
+    .card:nth-of-type(1) { order: 7; margin: 0; border-radius: 12px; padding: 10px 12px; }
+    .card:nth-of-type(2) { order: 8; margin: 0; border-radius: 12px; padding: 10px 12px; }
+    .info { order: 9; margin: 0; border-radius: 12px; padding: 12px; }
+
+    /* Настройка внутренностей для телефона */
+    h1 { font-size: 26px; }
+    .title-bomb { width: 32px; height: 32px; }
+    
+    .mult .m { font-size: 10.5px; padding: 6px 1px; letter-spacing: -0.2px; }
+    .stats > div { font-size: 11px; line-height: 1.3; }
+    
+    .grid { grid-template-columns: repeat(5, 1fr); gap: 5px; width: 100%; }
+    .cell { width: 100%; height: auto; aspect-ratio: 1/1; border-radius: 10px; }
+
+    .actions .btn { min-height: 50px; font-size: 16px; border-radius: 10px; }
+    .actions .auto { flex: 0 0 80px; font-size: 13px; }
+
+    .balance-box .lbl { margin: 0; font-size: 12px; }
+    .balance-box .val { font-size: 22px; }
+
+    .btn { min-height: 44px; font-size: 14px; }
+    input[type=number] { font-size: 20px; }
+    
+    .info .history { height: 130px; }
+
     @media (hover:none){
       .btn:hover:not(:disabled){background:#475569;}
       .btn.blue:hover:not(:disabled){background:var(--blue);}
@@ -183,10 +211,10 @@
   @media (max-width:380px){
     body{padding:8px;}
     h1{font-size:22px;}
-    .title-bomb { width: 28px; height: 28px; }
+    .title-bomb { width: 26px; height: 26px; }
     .balance-box .val{font-size:20px;}
     .mult .m{font-size:9.5px; padding:5px 0;}
-    .stats > div{font-size:11px;}
+    .stats > div{font-size:10px;}
     .actions .auto{flex:0 0 60px;}
   }
 </style>
@@ -306,53 +334,45 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Звезды
 const stars = [];
 for (let i = 0; i < 150; i++) {
   stars.push({
     x: Math.random() * width,
     y: Math.random() * height,
     size: Math.random() * 1.5 + 0.5,
-    vx: (Math.random() - 0.5) * 0.2, // Медленное хаотичное движение
+    vx: (Math.random() - 0.5) * 0.2,
     vy: (Math.random() - 0.5) * 0.2,
     alpha: Math.random(),
     targetAlpha: Math.random(),
-    fadeSpeed: 0.002 + Math.random() * 0.005 // Скорость затухания/загорания
+    fadeSpeed: 0.002 + Math.random() * 0.005
   });
 }
 
-// Кометы
 let comets = [];
 function spawnComet() {
-  if (Math.random() < 0.4) return; // Не спавним слишком часто
+  if (Math.random() < 0.4) return;
   comets.push({
     x: Math.random() * width,
     y: Math.random() * (height / 2),
-    dx: 3 + Math.random() * 4, // Скорость по X
-    dy: 1 + Math.random() * 2, // Скорость по Y
+    dx: 3 + Math.random() * 4,
+    dy: 1 + Math.random() * 2,
     length: 40 + Math.random() * 80,
     life: 100
   });
 }
 setInterval(spawnComet, 1500);
 
-// Анимация
 function animate() {
   ctx.clearRect(0, 0, width, height);
 
-  // Отрисовка звезд
   stars.forEach(s => {
-    // Движение
     s.x += s.vx; s.y += s.vy;
-    // Зацикливание (чтобы не улетали за экран)
     if (s.x < 0) s.x = width; if (s.x > width) s.x = 0;
     if (s.y < 0) s.y = height; if (s.y > height) s.y = 0;
 
-    // Логика мерцания
     if (s.alpha < s.targetAlpha) s.alpha += s.fadeSpeed;
     else s.alpha -= s.fadeSpeed;
 
-    // Смена цели (гаснет/загорается)
     if (s.alpha <= 0 || s.alpha >= 1) {
       s.targetAlpha = Math.random();
     }
@@ -363,24 +383,21 @@ function animate() {
     ctx.fill();
   });
 
-  // Отрисовка комет
   comets.forEach((c, index) => {
     c.x += c.dx; c.y += c.dy; c.life--;
     
-    // Удаляем комету, если она улетела
     if (c.life <= 0 || c.x > width || c.y > height) {
       comets.splice(index, 1);
       return;
     }
 
-    // Хвост кометы
     ctx.beginPath();
     ctx.moveTo(c.x, c.y);
     ctx.lineTo(c.x - c.dx * c.length, c.y - c.dy * c.length);
     
     const grad = ctx.createLinearGradient(c.x, c.y, c.x - c.dx * c.length, c.y - c.dy * c.length);
-    grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); // Голова
-    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');   // Хвост
+    grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
     
     ctx.strokeStyle = grad;
     ctx.lineWidth = 2;
