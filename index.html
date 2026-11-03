@@ -21,7 +21,7 @@
     touch-action:manipulation;
   }
 
-  .left{width:360px; flex-shrink:0; background:var(--panel); border-radius:15px; padding:12px; contain:layout style;}
+  .left{width:360px; flex-shrink:0; background:var(--panel); border-radius:15px; padding:12px;}
   .right{flex:1; max-width:640px; min-width:0; display:flex; flex-direction:column; gap:15px;}
 
   h1{margin:6px 0 12px; text-align:center; font-size:34px; letter-spacing:.5px;}
@@ -118,7 +118,7 @@
   .cell.dead{cursor:default;} .cell.safe{cursor:default;}
 
   /* ============================================================= */
-  /* ПЛАНШЕТ: 700–1100px — уменьшаем левую панель, сетка тянется    */
+  /* ПЛАНШЕТ: 700–1100px                                            */
   /* ============================================================= */
   @media (max-width:1100px){
     .left{width:300px;}
@@ -257,9 +257,7 @@ const TOTAL = 25;
 const STORAGE_KEY = "remines_bet";
 
 // ============ SVG-ИКОНКИ (замена эмодзи) ============
-// Каждая иконка — компактная, масштабируется, не зависит от шрифта системы.
 const ICONS = {
-  // ? — скрытая клетка
   hidden: `<svg viewBox="0 0 100 100" aria-hidden="true">
     <defs><linearGradient id="ih" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#60A5FA"/><stop offset="1" stop-color="#2563EB"/>
@@ -270,7 +268,6 @@ const ICONS = {
       font-family="Segoe UI, Arial, sans-serif">?</text>
   </svg>`,
 
-  // ★ — звезда (безопасная клетка)
   star: `<svg viewBox="0 0 100 100" aria-hidden="true">
     <defs><linearGradient id="is" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#FB923C"/><stop offset="1" stop-color="#EA580C"/>
@@ -280,7 +277,6 @@ const ICONS = {
       fill="#F8FAFC"/>
   </svg>`,
 
-  // ✕ — мина
   cross: `<svg viewBox="0 0 100 100" aria-hidden="true">
     <defs><linearGradient id="ic" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#60A5FA"/><stop offset="1" stop-color="#2563EB"/>
@@ -294,7 +290,6 @@ const ICONS = {
     </g>
   </svg>`,
 
-  // 💎 — бриллиант (звёзды/безопасные)
   diamond: `<svg viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="idm" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#67E8F9"/><stop offset="1" stop-color="#0891B2"/>
@@ -303,7 +298,6 @@ const ICONS = {
     <path d="M6 3l6 6 6-6M2 9h20M12 9v13" stroke="#0E7490" stroke-width="1" fill="none" opacity=".6"/>
   </svg>`,
 
-  // 💣 — бомба (риск)
   bomb: `<svg viewBox="0 0 24 24" aria-hidden="true">
     <defs><radialGradient id="ibg" cx="40%" cy="35%" r="70%">
       <stop offset="0" stop-color="#94A3B8"/><stop offset="1" stop-color="#1E293B"/>
@@ -314,13 +308,11 @@ const ICONS = {
     <circle cx="19" cy="4" r="1.2" fill="#FBBF24"/>
   </svg>`,
 
-  // 🔲 — клетка (открыто)
   cell: `<svg viewBox="0 0 24 24" aria-hidden="true">
     <rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="#94A3B8" stroke-width="2"/>
     <path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke="#64748B" stroke-width="1" opacity=".5"/>
   </svg>`,
 
-  // 🟢 — зелёный индикатор
   dotGreen: `<svg viewBox="0 0 16 16" aria-hidden="true">
     <defs><radialGradient id="dg" cx="35%" cy="35%" r="70%">
       <stop offset="0" stop-color="#6EE7B7"/><stop offset="1" stop-color="#059669"/>
@@ -329,7 +321,6 @@ const ICONS = {
     <circle cx="6" cy="6" r="1.6" fill="#fff" opacity=".8"/>
   </svg>`,
 
-  // 🔴 — красный индикатор
   dotRed: `<svg viewBox="0 0 16 16" aria-hidden="true">
     <defs><radialGradient id="dr" cx="35%" cy="35%" r="70%">
       <stop offset="0" stop-color="#FCA5A5"/><stop offset="1" stop-color="#B91C1C"/>
@@ -393,7 +384,7 @@ function fairMultiplier(opened, mines, total=TOTAL){
 }
 const balanceRub = () => state.balanceK / 100;
 
-// ============ DOM (кэш) ============
+// ============ DOM ============
 const $ = id => document.getElementById(id);
 const balanceEl = $("balance");
 const betInput = $("betInput");
@@ -411,7 +402,7 @@ const statWin = $("statWin");
 const statNext = $("statNext");
 const gridEl = $("grid");
 
-// ============ ПОСТРОЕНИЕ UI (один раз) ============
+// ============ ПОСТРОЕНИЕ UI ============
 const cells = [];
 for(let r=0; r<5; r++){
   for(let c=0; c<5; c++){
@@ -487,7 +478,6 @@ function addHistory(text, win){
   div.className = "item";
   div.innerHTML = `${win ? ICONS.dotGreen : ICONS.dotRed}<span>${text}</span>`;
   historyEl.prepend(div);
-  // Ограничиваем историю, чтобы не копилась бесконечно
   while(historyEl.children.length > MAX_HISTORY){
     historyEl.removeChild(historyEl.lastChild);
   }
@@ -562,7 +552,6 @@ async function startGame(){
   updateStatsPanel();
   cells.forEach(c => { c.className = "cell hidden"; c.innerHTML = ICONS.hidden; });
 
-  // Сохраняем ставку для следующего раза
   try{ localStorage.setItem(STORAGE_KEY, String(betVal)); }catch(e){}
 
   state.busy = false;
@@ -591,4 +580,76 @@ function revealCell(r, c){
     updateMultDisplay(state.opened.size);
     updateStatsPanel();
 
-    if(state.opened.size === TOTAL - state.minesCount)
+    if(state.opened.size === TOTAL - state.minesCount) cashOut();
+  }
+}
+
+function cashOut(){
+  if(!state.gameActive || state.opened.size === 0) return;
+  state.balanceK += Math.round(state.currentWin * 100);
+  updateBalance();
+  gameOver(true);
+}
+
+function gameOver(win){
+  state.gameActive = false;
+  for(let i=0; i<TOTAL; i++){
+    if(!state.opened.has(i)){
+      cells[i].className = "cell dead";
+      cells[i].innerHTML = state.board[i] === 1 ? ICONS.cross : ICONS.star;
+    }
+  }
+  if(win){
+    setResult(`ВЫ ВЫИГРАЛИ: ${state.currentWin.toFixed(2)} ₽`, "var(--green)");
+    addHistory(`Выиграл: +${state.currentWin.toFixed(2)} ₽`, true);
+  } else {
+    setResult(`ВЗРЫВ! Потеряно: ${state.bet.toFixed(2)} ₽`, "var(--red)");
+    addHistory(`Проиграл: -${state.bet.toFixed(2)} ₽`, false);
+  }
+  actionBtn.textContent = "НАЧАТЬ";
+  actionBtn.className = "btn blue";
+  autoBtn.disabled = true;
+  blockControls(false);
+}
+
+// ============ ОБРАБОТЧИКИ ============
+actionBtn.addEventListener("click", () => {
+  if(state.gameActive) cashOut();
+  else startGame();
+});
+autoBtn.addEventListener("click", () => {
+  if(!state.gameActive) return;
+  const avail = [...Array(TOTAL).keys()].filter(i => !state.opened.has(i));
+  if(!avail.length) return;
+  const pick = avail[Math.floor(Math.random() * avail.length)];
+  revealCell(Math.floor(pick/5), pick%5);
+});
+
+$("btnMin").addEventListener("click", () => betInput.value = Math.max(MIN_BET, 1));
+$("btnHalf").addEventListener("click", () => {
+  const v = parseFloat(betInput.value) || 0;
+  betInput.value = Math.max(MIN_BET, Math.min(v/2, MAX_BET)).toFixed(0);
+});
+$("btnDouble").addEventListener("click", () => {
+  const v = parseFloat(betInput.value) || 0;
+  betInput.value = Math.max(MIN_BET, Math.min(v*2, MAX_BET)).toFixed(0);
+});
+$("btnMax").addEventListener("click", () => {
+  betInput.value = Math.max(1, Math.floor(balanceRub()));
+});
+
+$("mDec").addEventListener("click", () => setMines(state.minesCount - 1));
+$("mInc").addEventListener("click", () => setMines(state.minesCount + 1));
+document.querySelectorAll(".mines-btn").forEach(b => {
+  b.addEventListener("click", () => setMines(+b.dataset.m));
+});
+
+// ============ СТАРТ ============
+try{
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if(saved) betInput.value = saved;
+}catch(e){}
+resetGameUI();
+</script>
+</body>
+</html>
