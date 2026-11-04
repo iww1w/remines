@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0F172A">
 <title>MineDodge</title>
-<!-- Красивая иконка сайта (бомба) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='45' cy='55' r='30' fill='%231E293B'/%3E%3Ccircle cx='35' cy='45' r='10' fill='%23fff' opacity='0.15'/%3E%3Cpath d='M 48 22 Q 65 10, 75 25' stroke='%23A16207' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='75' cy='25' r='6' fill='%23FDE047'/%3E%3C/svg%3E">
 <style>
   :root{
@@ -60,21 +59,21 @@
   .spark { transform-origin: 75px 25px; animation: spark 0.15s infinite alternate; }
 
   /* Блок Ставки и Баланса */
-  .bet-card { padding: 6px 10px; margin-bottom: 6px; }
-  .bet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px; }
-  .bet-header .title { margin: 0; padding-top: 4px; }
+  .bet-card { padding: 4px 10px; margin-bottom: 6px; }
+  .bet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px; }
+  .bet-header .title { margin: 0; }
   
-  /* Фон баланса как у истории (var(--bg)) */
+  /* Фон баланса убран */
   .balance-wrapper { 
-    background: var(--bg); 
-    padding: 6px 12px; 
-    border-radius: 8px; 
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .balance-wrapper .lbl { font-size: 10px; font-weight:700; color:var(--gray); letter-spacing:1px; }
   .balance-wrapper .val { font-size: 20px; font-weight: 800; color: var(--green); line-height: 1.1; }
 
-  .card{background:var(--card); border-radius:10px; padding:8px 12px; margin-bottom:8px;}
+  .card{background:var(--card); border-radius:10px; padding:6px 12px; margin-bottom:8px;}
   .card .title{font-size:11px; font-weight:700; color:var(--gray); letter-spacing:1px;}
 
   input[type=number]{
@@ -85,8 +84,8 @@
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
 
-  .row{display:flex; gap:4px; margin-top:4px;}
-  .row .btn { min-height: 30px; padding: 4px; font-size: 12px; }
+  .row{display:flex; gap:4px; margin-top:2px;}
+  .row .btn { min-height: 28px; padding: 4px; font-size: 12px; }
   
   .btn{
     flex:1; border:none; border-radius:8px; background:#475569; color:var(--white);
@@ -201,7 +200,7 @@
   .sidebar-btn svg { width: 22px; height: 22px; opacity: 0.8; }
 
   /* ============================================================= */
-  /* КНОПКА МЕНЮ (Идеально круглая и красивая)                     */
+  /* КНОПКА МЕНЮ                                                   */
   /* ============================================================= */
   .menu-toggle {
     display: none; position: fixed; top: 15px; left: 15px; z-index: 101;
@@ -253,13 +252,21 @@
   @media (max-width:700px){
     .layout {
       flex-direction: column; align-items: stretch; gap: 10px;
-      padding: 10px; padding-top: 65px; 
+      padding: 10px; 
+      padding-top: 10px; /* Убран огромный отступ сверху */
     }
 
     .left, .right { display: contents; }
 
-    h1 { order: 1; margin: 0 0 10px 0; font-size: 36px; }
+    h1 { 
+      order: 1; 
+      margin: 0 0 10px 0; 
+      font-size: 36px; 
+      padding-left: 40px; /* Чтобы не перекрывалось с кнопкой меню */
+    }
+    
     .title-bomb { width: 46px; height: 46px; }
+    
     .mult { order: 2; padding: 6px; gap: 4px; }
     .stats { order: 3; padding: 8px; }
     
@@ -268,7 +275,18 @@
     .cell { width: 100%; height: auto; aspect-ratio: 1/1; border-radius: 10px; }
 
     .actions { order: 5; margin: 0; gap: 8px; }
-    .bet-card { order: 6; margin: 0; border-radius: 12px; padding: 8px 10px; }
+    
+    /* Компактный блок ставки для телефона */
+    .bet-card { 
+      order: 6; 
+      margin: 0; 
+      border-radius: 12px; 
+      padding: 6px 10px; /* Уменьшен padding */
+    }
+    .bet-header { margin-bottom: 0; }
+    .row { margin-top: 2px; }
+    .row .btn { min-height: 28px; font-size: 11px; padding: 2px; } /* Уменьшены кнопки ставки */
+    
     .mines-card { order: 7; margin: 0; border-radius: 12px; padding: 8px 10px; }
     
     .info { order: 8; margin: 0; border-radius: 12px; padding: 10px; display: flex; flex-direction: row; gap: 10px;}
@@ -283,13 +301,13 @@
     .actions .btn { min-height: 44px; font-size: 15px; border-radius: 10px; padding: 8px 4px; }
     .actions .auto { flex: 0 0 70px; font-size: 13px; }
 
-    .balance-wrapper .val { font-size: 20px; }
+    .balance-wrapper .val { font-size: 18px; } /* Уменьшен баланс */
     .btn { min-height: 40px; font-size: 13px; }
-    input[type=number] { font-size: 20px; }
+    input[type=number] { font-size: 18px; padding: 2px 0; } /* Уменьшен инпут */
   }
 
   @media (max-width:380px){
-    .layout { padding: 8px; padding-top: 65px; }
+    .layout { padding: 8px; padding-top: 10px; }
     h1{font-size:30px;}
     .title-bomb { width: 38px; height: 38px; }
     .mult .m{font-size:9.5px; padding:5px 0;}
@@ -789,7 +807,7 @@ function addHistory(text, win){
   const div = document.createElement("div");
   div.className = "item";
   div.innerHTML = `${win ? ICONS.iconPlus : ICONS.iconMinus}<span>${text}</span>`;
-  historyEl.prepend(div); // Новые записи строго сверху
+  historyEl.prepend(div);
   while(historyEl.children.length > MAX_HISTORY){
     historyEl.removeChild(historyEl.lastChild);
   }
