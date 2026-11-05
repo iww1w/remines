@@ -146,22 +146,23 @@
   .eye-icon:hover { opacity: 1; }
   .eye-icon svg { width: 20px; height: 20px; stroke: var(--white); }
 
-  /* Кнопка переключения режима (Вход/Регистрация) */
+  /* Стили для текстовой кнопки переключения */
   #authSwitch {
-    width: 100%;
+    text-align: center;
     margin-top: 15px;
-    background: var(--blue);
-    color: var(--white);
     font-size: 14px;
-    font-weight: 700;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-family: inherit;
+    color: var(--gray);
   }
-  #authSwitch:hover { background: #2563EB; }
+  .link-blue {
+    color: var(--blue);
+    cursor: pointer;
+    font-weight: 700;
+    transition: color 0.2s;
+  }
+  .link-blue:hover {
+    color: #2563EB;
+    text-decoration: underline;
+  }
 
   /* Уведомления (Тосты) */
   #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; pointer-events: none; }
@@ -220,7 +221,15 @@
     .stats > div { font-size: 11px; line-height: 1.3; }
     .actions .btn { min-height: 44px; font-size: 15px; border-radius: 10px; padding: 8px 4px; }
     .actions .auto { flex: 0 0 70px; font-size: 13px; }
-    .balance-wrapper .val { font-size: 18px; }
+    
+    /* Увеличенный прямоугольник за балансом на телефоне */
+    .balance-wrapper {
+      background: var(--bg);
+      padding: 6px 12px;
+      border-radius: 10px;
+      min-width: 120px;
+    }
+    
     .btn { min-height: 40px; font-size: 13px; }
     input[type=number] { font-size: 18px; padding: 2px 0; }
   }
@@ -372,7 +381,8 @@
       <button class="btn" onclick="closeModal()">Отмена</button>
       <button class="btn blue" id="authSubmitBtn" onclick="doAuth()">Войти</button>
     </div>
-    <button id="authSwitch" onclick="switchAuthMode()">Нет аккаунта? Зарегистрироваться</button>
+    <!-- Текстовая кнопка переключения (как в вашем примере) -->
+    <div id="authSwitch">Нет аккаунта? <span class="link-blue" onclick="switchAuthMode()">Зарегистрироваться</span></div>
   </div>
 
   <!-- Подтверждение выхода -->
@@ -399,15 +409,14 @@
     </div>
   </div>
 
-  <!-- Вывод -->
+  <!-- Вывод (Убрана карта) -->
   <div class="modal" id="modalWithdraw" style="display: none;">
     <h2>Вывод средств</h2>
     <div class="payment-methods">
       <div class="payment-method active" onclick="selectPay(this)">СБП</div>
-      <div class="payment-method" onclick="selectPay(this)">Карта</div>
     </div>
     <div class="form-group"><label>Сумма (₽)</label><input type="number" id="withdrawAmount" value="500" min="100"></div>
-    <div class="form-group"><label>Реквизиты (телефон или карта)</label><input type="text" id="withdrawReq" placeholder="+7 999... или 0000 0000..."></div>
+    <div class="form-group"><label>Реквизиты (телефон)</label><input type="text" id="withdrawReq" placeholder="+7 999..."></div>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Отмена</button>
       <button class="btn red" onclick="doWithdraw()">Вывести</button>
@@ -437,11 +446,14 @@
     </div>
   </div>
 
-  <!-- Рефералка -->
+  <!-- Рефералка (Добавлено копирование) -->
   <div class="modal" id="modalReferral" style="display: none;">
     <h2>Реферальная система</h2>
     <p style="font-size:14px; margin-bottom:15px; color:var(--gray);">Приглашайте друзей и получайте 10% от их выигрышей!</p>
-    <div class="form-group"><label>Ваша ссылка</label><input type="text" readonly value="https://iww1w.github.io/remines/?ref=12345"></div>
+    <div class="form-group">
+      <label>Ваша ссылка (нажмите, чтобы скопировать)</label>
+      <input type="text" id="refLink" readonly value="https://iww1w.github.io/remines/?ref=12345" onclick="copyRefLink()" style="cursor: pointer; text-align: center; font-weight: bold; color: var(--blue);">
+    </div>
     <div class="modal-actions">
       <button class="btn blue" onclick="closeModal()">Понятно</button>
     </div>
@@ -581,7 +593,13 @@ function switchAuthMode() {
   isLoginMode = !isLoginMode;
   document.getElementById('authTitle').textContent = isLoginMode ? "Вход в аккаунт" : "Регистрация";
   document.getElementById('authSubmitBtn').textContent = isLoginMode ? "Войти" : "Создать";
-  document.getElementById('authSwitch').textContent = isLoginMode ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти";
+  
+  const switchEl = document.getElementById('authSwitch');
+  if (isLoginMode) {
+    switchEl.innerHTML = 'Нет аккаунта? <span class="link-blue" onclick="switchAuthMode()">Зарегистрироваться</span>';
+  } else {
+    switchEl.innerHTML = 'Уже есть аккаунт? <span class="link-blue" onclick="switchAuthMode()">Войти</span>';
+  }
 }
 
 function doAuth() {
@@ -602,6 +620,15 @@ function doLogout() {
   updateAuthUI();
   closeModal();
   showToast("Вы вышли из аккаунта", "info");
+}
+
+// ============ КОПИРОВАНИЕ ССЫЛКИ ============
+function copyRefLink() {
+  const copyText = document.getElementById("refLink");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+  showToast("Ссылка скопирована!", "success");
 }
 
 // ============ БЛОКИРОВКА И РАЗБЛОКИРОВКА КНОПОК ============
