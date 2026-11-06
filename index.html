@@ -32,29 +32,24 @@
     font-family:"Outfit", system-ui, -apple-system, sans-serif;
     min-height:100vh; touch-action:manipulation;
     position: relative; z-index: 1;
-    /* Космический туман на фоне */
     background-image: 
       radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08), transparent 25%),
       radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
     background-attachment: fixed;
   }
 
-  /* Космический фон (Звезды и Кометы) */
   #space-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
 
-  /* Общая разметка */
   .layout { display: flex; gap: 16px; padding: 16px; width: 100%; max-width: 1400px; margin: 0 auto; justify-content: center; align-items: flex-start; }
 
   .left{width:360px; flex-shrink:0; background:var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius:20px; padding:16px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
   .right{flex:1; max-width:640px; min-width:0; display:flex; flex-direction:column; gap:16px;}
 
-  /* Заголовок */
   h1{ margin:10px 0 20px; text-align:center; font-size:42px; font-weight:800; letter-spacing:1px; display: flex; align-items: center; justify-content: center; gap: 12px; text-shadow: 0 4px 15px rgba(249, 115, 22, 0.3); }
   .title-bomb { width: 54px; height: 54px; filter: drop-shadow(0 0 15px rgba(249, 115, 22, 0.6)); }
   @keyframes spark { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; filter: brightness(1.5); } 100% { transform: scale(1); opacity: 0.8; } }
   .spark { transform-origin: 75px 25px; animation: spark 0.2s infinite alternate; }
 
-  /* Блок Ставки и Баланса */
   .bet-card { padding: 8px 12px; margin-bottom: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.05); }
   .bet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
   .bet-header .title { font-size:12px; font-weight:600; color:var(--gray); letter-spacing:1px; text-transform:uppercase; }
@@ -66,7 +61,6 @@
   .card{background:var(--card); border-radius:12px; padding:10px 14px; margin-bottom:10px; border: 1px solid rgba(255,255,255,0.03);}
   .card .title{font-size:11px; font-weight:700; color:var(--gray); letter-spacing:1px; margin-bottom: 6px;}
 
-  /* Инпуты */
   input[type=number], input[type=text], input[type=password]{
     width:100%; background:rgba(15, 23, 42, 0.8); border:1px solid rgba(255,255,255,0.1); border-radius:10px;
     color:var(--white); font-size:16px; font-weight:600; padding: 14px;
@@ -98,7 +92,6 @@
   .btn.red{background:var(--red); color: #fff; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);} 
   .btn.red:hover:not(:disabled){background:var(--red-hover); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);}
 
-  /* Мины */
   .mines-row{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 8px; }
   .mines-input{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .mines-input .btn{ width: 100%; padding: 0; min-height: 44px; background: rgba(15, 23, 42, 0.8); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 18px;}
@@ -109,29 +102,26 @@
   .actions .btn{padding:14px 6px; font-size:16px; border-radius:12px;}
   .actions .auto{flex:0 0 80px; font-size:14px;}
 
-  /* Инфо и История */
   .info{background:rgba(30, 41, 59, 0.5); border-radius:12px; padding:14px; flex:1; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.03);}
   .info-left, .info-right { display: flex; flex-direction: column; min-width: 0; }
   .info .h{font-size:12px; font-weight:800; color:var(--gray); text-transform:uppercase; letter-spacing:1px; margin:0 0 10px 0;}
   .info .result{font-size:18px; font-weight:800; color:var(--gray); margin-bottom:10px; text-shadow: 0 0 10px rgba(255,255,255,0.1);}
   .info .stat{font-size:13px; font-weight:600; margin:5px 0; display:flex; align-items:center; gap:8px;}
   .info .stat svg{width:16px; height:16px; flex-shrink:0;}
+  
   .history{ background:rgba(15, 23, 42, 0.8); border-radius:10px; padding:10px; height: 150px; flex: none; overflow-y: auto; font-family:"Outfit", sans-serif; font-size:14px; white-space:nowrap; margin-top: 6px; border: 1px solid rgba(255,255,255,0.05);}
   .history .item{display:flex; align-items:center; gap:8px; padding:6px 0; font-weight: 600;}
-  .history .item svg{width:18px; height:18px; flex-shrink:0;}
+  .history .item svg{width:22px; height:22px; flex-shrink:0;}
 
-  /* Множители */
   .mult{background:rgba(30, 41, 59, 0.5); border-radius:16px; padding:10px; display:flex; gap:6px; justify-content:center; flex-wrap:nowrap; border: 1px solid rgba(255,255,255,0.03);}
   .mult .m{ flex:1; min-width:0; text-align:center; padding:10px 4px; border-radius:10px; background:rgba(15, 23, 42, 0.8); color:var(--orange); font-weight:800; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; transition:all .2s; border: 1px solid transparent;}
   .mult .m.done{background:var(--green); color:#fff; box-shadow: 0 0 10px rgba(16,185,129,0.3); border-color: rgba(255,255,255,0.2);}
   .mult .m.current{background:var(--orange); color:#000; box-shadow: 0 0 15px rgba(245,158,11,0.5); border-color: rgba(255,255,255,0.5); transform: scale(1.05); z-index: 2;}
 
-  /* Статы */
   .stats{background:rgba(30, 41, 59, 0.5); border-radius:16px; padding:12px; display:flex; border: 1px solid rgba(255,255,255,0.03);}
   .stats > div{flex:1; text-align:center; font-weight:800; font-size:15px; line-height:1.4;}
   .stats .gray{color:var(--gray);} .stats .green{color:var(--green); text-shadow: 0 0 8px rgba(16,185,129,0.3);} .stats .orange{color:var(--orange); text-shadow: 0 0 8px rgba(245,158,11,0.3);}
 
-  /* Поле */
   .field{ background:rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border-radius:28px; border:2px solid rgba(255,255,255,0.1); padding:18px; align-self:center; max-width:100%; box-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(56,189,248,0.05);}
   .grid{display:grid; grid-template-columns:repeat(5, 72px); gap:10px;}
   .cell{ width:72px; height:72px; border-radius:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; position:relative; overflow:hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -143,7 +133,6 @@
   .cell.dead{cursor:default; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);} 
   .cell.safe{cursor:default; box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);}
 
-  /* Шторка */
   .sidebar { width: 260px; flex-shrink: 0; background: var(--panel); backdrop-filter: blur(12px); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 16px; min-height: 600px; border: 1px solid rgba(255,255,255,0.05);}
   .sidebar-menu { display: flex; flex-direction: column; gap: 10px; }
   .sidebar-btn { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 14px 16px; color: var(--white); font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; }
@@ -155,7 +144,6 @@
   .sidebar-btn svg { width: 22px; height: 22px; opacity: 0.9; transition: transform 0.2s; }
   .sidebar-btn:hover svg { transform: scale(1.1); }
 
-  /* Модальные окна */
   .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 11, 20, 0.85); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
   .modal-overlay.open { opacity: 1; pointer-events: auto; }
   .modal { background: var(--panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; width: 90%; max-width: 400px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); transform: translateY(30px) scale(0.95); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
@@ -169,31 +157,14 @@
   .payment-method { flex: 1; padding: 12px; text-align: center; background: rgba(15, 23, 42, 0.8); border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
   .payment-method.active { border-color: var(--blue); background: rgba(56, 189, 248, 0.1); color: var(--blue); }
   
-  /* Иконка глаза для пароля */
   .eye-icon { position: absolute; right: 14px; top: 38px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
   .eye-icon:hover { opacity: 1; }
   .eye-icon svg { width: 22px; height: 22px; stroke: var(--white); }
 
-  /* Стили для текстовой кнопки переключения */
-  #authSwitch {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 14px;
-    color: var(--gray);
-    font-weight: 600;
-  }
-  .link-blue {
-    color: var(--blue);
-    cursor: pointer;
-    font-weight: 800;
-    transition: all 0.2s;
-  }
-  .link-blue:hover {
-    color: var(--blue-hover);
-    text-decoration: underline;
-  }
+  #authSwitch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--gray); font-weight: 600; }
+  .link-blue { color: var(--blue); cursor: pointer; font-weight: 800; transition: all 0.2s; }
+  .link-blue:hover { color: var(--blue-hover); text-decoration: underline; }
 
-  /* Уведомления (Тосты) */
   #toast-container { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; pointer-events: none; }
   .toast { background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(10px); color: var(--white); padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--blue); animation: slideDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; transform: translateY(-20px); }
   .toast.success { border-left-color: var(--green); }
@@ -202,7 +173,6 @@
   @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeOut { to { opacity: 0; transform: translateY(-20px); } }
 
-  /* История транзакций */
   .tx-list { max-height: 300px; overflow-y: auto; background: rgba(15, 23, 42, 0.8); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); }
   .tx-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; font-weight: 600; }
   .tx-item:last-child { border-bottom: none; }
@@ -211,7 +181,6 @@
   .tx-amount.in { color: var(--green); font-weight: 800; }
   .tx-amount.out { color: var(--red); font-weight: 800; }
 
-  /* Меню */
   .menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 101; width: 48px; height: 48px; border-radius: 50%; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0; color: var(--white); cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); transition: all 0.3s; backdrop-filter: blur(10px); }
   .menu-toggle:active { transform: scale(0.9); }
   .menu-toggle svg { width: 24px; height: 24px; transition: transform 0.3s ease; }
@@ -219,7 +188,6 @@
   .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(8, 11, 20, 0.7); z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
   .overlay.open { opacity: 1; pointer-events: auto; }
 
-  /* Адаптив */
   @media (max-width:1100px){
     .left{width:300px;}
     h1{font-size:34px;} .title-bomb { width: 44px; height: 44px; }
@@ -245,14 +213,7 @@
     .actions .btn { min-height: 50px; font-size: 16px; border-radius: 12px; }
     .actions .auto { flex: 0 0 80px; font-size: 14px; }
     
-    /* Компактный блок ставки на телефоне */
-    .bet-card { 
-      order: 6; 
-      margin: 0; 
-      border-radius: 12px; 
-      padding: 10px 12px;
-      background: rgba(30, 41, 59, 0.8);
-    }
+    .bet-card { order: 6; margin: 0; border-radius: 12px; padding: 10px 12px; background: rgba(30, 41, 59, 0.8); }
     .bet-header { margin-bottom: 6px; } 
     #betInput { margin: 0 0 8px 0; font-size: 20px;}
     .row { margin-top: 0; } 
@@ -290,7 +251,6 @@
 <div class="overlay" id="overlay"></div>
 
 <div class="layout">
-  <!-- ЛЕВАЯ ПАНЕЛЬ -->
   <div class="left">
     <h1>
       <svg class="title-bomb" viewBox="0 0 100 100">
@@ -353,7 +313,6 @@
     </div>
   </div>
 
-  <!-- ЦЕНТРАЛЬНАЯ ПАНЕЛЬ -->
   <div class="right">
     <div class="mult" id="multRow"></div>
     <div class="stats">
@@ -364,7 +323,6 @@
     <div class="field"><div class="grid" id="grid"></div></div>
   </div>
 
-  <!-- ШТОРКА -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-menu">
       <button class="sidebar-btn login-btn" id="btnAuth">
@@ -400,10 +358,7 @@
   </div>
 </div>
 
-<!-- МОДАЛЬНЫЕ ОКНА -->
 <div class="modal-overlay" id="modalOverlay">
-  
-  <!-- Вход / Регистрация -->
   <div class="modal" id="modalAuth" style="display: none;">
     <h2 id="authTitle">Вход в аккаунт</h2>
     <div class="form-group"><label>Логин</label><input type="text" id="authLogin" placeholder="Ваш логин"></div>
@@ -421,7 +376,6 @@
     <div id="authSwitch">Нет аккаунта? <span class="link-blue" onclick="switchAuthMode()">Зарегистрироваться</span></div>
   </div>
 
-  <!-- Подтверждение выхода -->
   <div class="modal" id="modalLogout" style="display: none;">
     <h2>Выход</h2>
     <p style="text-align:center; color:var(--gray); margin-bottom:20px;">Вы уверены, что хотите выйти из аккаунта?</p>
@@ -431,7 +385,6 @@
     </div>
   </div>
 
-  <!-- Пополнение -->
   <div class="modal" id="modalDeposit" style="display: none;">
     <h2>Пополнение</h2>
     <div class="payment-methods">
@@ -445,7 +398,6 @@
     </div>
   </div>
 
-  <!-- Вывод -->
   <div class="modal" id="modalWithdraw" style="display: none;">
     <h2>Вывод средств</h2>
     <div class="payment-methods">
@@ -459,7 +411,6 @@
     </div>
   </div>
 
-  <!-- История операций -->
   <div class="modal" id="modalHistory" style="display: none;">
     <h2>История операций</h2>
     <div class="tx-list" id="txList">
@@ -470,7 +421,6 @@
     </div>
   </div>
 
-  <!-- Поддержка -->
   <div class="modal" id="modalSupport" style="display: none;">
     <h2>Поддержка</h2>
     <p style="font-size:14px; margin-bottom:15px; color:var(--gray);">Опишите вашу проблему, и мы ответим вам в Telegram.</p>
@@ -482,7 +432,6 @@
     </div>
   </div>
 
-  <!-- Рефералка -->
   <div class="modal" id="modalReferral" style="display: none;">
     <h2>Реферальная система</h2>
     <p style="font-size:14px; margin-bottom:15px; color:var(--gray);">Приглашайте друзей и получайте 10% от их выигрышей!</p>
@@ -494,7 +443,6 @@
       <button class="btn blue" onclick="closeModal()">Понятно</button>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -518,7 +466,6 @@ let width, height;
 function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize); resize();
 
-// Звезды с плавным мерцанием (синусоида)
 const stars = [];
 const numStars = 200;
 for (let i = 0; i < numStars; i++) {
@@ -534,25 +481,17 @@ for (let i = 0; i < numStars; i++) {
   });
 }
 
-// Кометы (с плавным затуханием)
 let comets = [];
 function spawnComet() {
   if (Math.random() < 0.3) return;
   const startX = Math.random() * width * 1.5 - width * 0.25;
   const startY = -100;
-  const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.3; // Примерно 45 градусов вправо-вниз
+  const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.3;
   const speed = 6 + Math.random() * 8;
   
   comets.push({
-    x: startX,
-    y: startY,
-    vx: Math.cos(angle) * speed,
-    vy: Math.sin(angle) * speed,
-    length: 80 + Math.random() * 120,
-    alpha: 0,
-    maxAlpha: 0.8 + Math.random() * 0.2,
-    life: 1.0,
-    fadeIn: true
+    x: startX, y: startY, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+    length: 80 + Math.random() * 120, alpha: 0, maxAlpha: 0.8 + Math.random() * 0.2, fadeIn: true
   });
 }
 setInterval(spawnComet, 2000);
@@ -560,66 +499,42 @@ setInterval(spawnComet, 2000);
 function animate() {
   ctx.clearRect(0, 0, width, height);
   
-  // Отрисовка звезд
   stars.forEach(s => {
     s.x += s.vx; s.y += s.vy;
     if (s.x < 0) s.x = width; if (s.x > width) s.x = 0;
     if (s.y < 0) s.y = height; if (s.y > height) s.y = 0;
     
-    // Плавное мерцание
     s.phase += s.twinkleSpeed;
     const currentAlpha = Math.abs(Math.sin(s.phase)) * 0.8 + 0.2;
     
     ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha})`;
-    ctx.beginPath(); 
-    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); 
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
   });
   
-  // Отрисовка комет
   comets.forEach((c, index) => {
-    // Плавное появление и исчезновение
-    if (c.fadeIn) {
-      c.alpha += 0.02;
-      if (c.alpha >= c.maxAlpha) c.fadeIn = false;
-    } else {
-      c.alpha -= 0.005;
-    }
+    if (c.fadeIn) { c.alpha += 0.02; if (c.alpha >= c.maxAlpha) c.fadeIn = false; } 
+    else { c.alpha -= 0.005; }
     
-    c.x += c.vx; 
-    c.y += c.vy;
+    c.x += c.vx; c.y += c.vy;
     
-    // Удаление, если комета улетела или погасла
-    if (c.alpha <= 0 || c.x > width + 200 || c.y > height + 200) {
-      comets.splice(index, 1);
-      return;
-    }
+    if (c.alpha <= 0 || c.x > width + 200 || c.y > height + 200) { comets.splice(index, 1); return; }
     
-    // Хвост кометы
     ctx.beginPath();
     const tailX = c.x - c.vx * (c.length / 10);
     const tailY = c.y - c.vy * (c.length / 10);
-    ctx.moveTo(c.x, c.y);
-    ctx.lineTo(tailX, tailY);
+    ctx.moveTo(c.x, c.y); ctx.lineTo(tailX, tailY);
     
     const grad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
     grad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha})`);
     grad.addColorStop(0.2, `rgba(56, 189, 248, ${c.alpha * 0.6})`);
     grad.addColorStop(1, 'rgba(56, 189, 248, 0)');
     
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.stroke();
+    ctx.strokeStyle = grad; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.stroke();
     
-    // Светящаяся голова
-    ctx.beginPath();
-    ctx.arc(c.x, c.y, 2, 0, Math.PI * 2);
+    ctx.beginPath(); ctx.arc(c.x, c.y, 2, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(255, 255, 255, ${c.alpha})`;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = 'rgba(255, 255, 255, 1)';
-    ctx.fill();
-    ctx.shadowBlur = 0; // Сброс
+    ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(255, 255, 255, 1)'; ctx.fill();
+    ctx.shadowBlur = 0;
   });
   
   requestAnimationFrame(animate);
@@ -665,7 +580,6 @@ function updateAuthUI() {
     document.getElementById('btnAuth').style.boxShadow = 'none';
     btns.forEach(b => b.disabled = false);
     
-    // Загружаем баланс
     let savedBal = localStorage.getItem('minedodge_bal_' + currentUser);
     if(savedBal) state.balanceK = parseInt(savedBal);
     else { state.balanceK = 100000; saveBalance(); }
@@ -677,7 +591,6 @@ function updateAuthUI() {
     document.getElementById('btnAuth').style.boxShadow = '0 4px 15px rgba(56, 189, 248, 0.3)';
     btns.forEach(b => b.disabled = true);
     
-    // Гостевой баланс
     state.balanceK = 100000;
     updateBalance();
   }
@@ -806,10 +719,8 @@ function doDeposit() {
   if (!amount || amount < 100) { showToast("Минимальная сумма 100 ₽", "error"); return; }
   
   const method = document.querySelector('#modalDeposit .payment-method.active').textContent;
-  
   state.balanceK += amount * 100;
-  saveBalance();
-  updateBalance();
+  saveBalance(); updateBalance();
   
   const tx = getTx();
   tx.unshift({ type: 'in', amount: amount, method: method, date: formatMskDate() });
@@ -828,10 +739,8 @@ function doWithdraw() {
   if (amount > (state.balanceK / 100)) { showToast("Недостаточно средств на балансе!", "error"); return; }
   
   const method = document.querySelector('#modalWithdraw .payment-method.active').textContent;
-  
   state.balanceK -= amount * 100;
-  saveBalance();
-  updateBalance();
+  saveBalance(); updateBalance();
   
   const tx = getTx();
   tx.unshift({ type: 'out', amount: amount, method: method, date: formatMskDate() });
@@ -846,7 +755,7 @@ const MIN_BET = 1.0, MAX_BET = 100000.0, INITIAL_BALANCE = 1000.0;
 const TOTAL = 25;
 const STORAGE_KEY = "minedodge_bet";
 
-// Улучшенные иконки
+// НОВЫЕ, КРАСИВЫЕ ИКОНКИ ДЛЯ ИСТОРИИ
 const ICONS = {
   hidden: `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="ih" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60A5FA"/><stop offset="1" stop-color="#2563EB"/></linearGradient><linearGradient id="qGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0F2FE"/><stop offset="100%" stop-color="#93C5FD"/></linearGradient><filter id="qShadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#1E3A8A" flood-opacity="0.6"/></filter></defs><rect width="100" height="100" rx="16" fill="url(#ih)"/><g transform="translate(50, 50) scale(0.8) translate(-50, -50)"><path d="M 33 38 C 33 18, 67 18, 67 38 C 67 52, 50 54, 50 65" fill="none" stroke="url(#qGrad)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" filter="url(#qShadow)"/><circle cx="50" cy="82" r="8" fill="url(#qGrad)" filter="url(#qShadow)"/></g></svg>`,
   star: `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="is" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCD34D"/><stop offset="1" stop-color="#F59E0B"/></linearGradient><filter id="starGlow"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#F59E0B" flood-opacity="0.8"/></filter></defs><rect width="100" height="100" rx="16" fill="rgba(15, 23, 42, 0.6)"/><polygon points="50,15 61,40 88,40 66,55 75,85 50,68 25,85 34,55 12,40 39,40" fill="url(#is)" filter="url(#starGlow)"/></svg>`,
@@ -854,8 +763,39 @@ const ICONS = {
   diamond: `<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="idm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67E8F9"/><stop offset="1" stop-color="#0891B2"/></linearGradient></defs><path d="M6 3h12l4 6-10 13L2 9z" fill="url(#idm)" stroke="#0E7490" stroke-width="1"/><path d="M6 3l6 6 6-6M2 9h20M12 9v13" stroke="#0E7490" stroke-width="1" fill="none" opacity=".6"/></svg>`,
   bomb: `<svg viewBox="0 0 24 24" aria-hidden="true"><defs><radialGradient id="ibg" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#94A3B8"/><stop offset="1" stop-color="#1E293B"/></radialGradient></defs><circle cx="11" cy="14" r="7" fill="url(#ibg)"/><rect x="14" y="4" width="2" height="4" rx="1" fill="#A16207" transform="rotate(35 15 6)"/><path d="M18 3l2 2-2 2" stroke="#F59E0B" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="19" cy="4" r="1.2" fill="#FBBF24"/></svg>`,
   cell: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="#94A3B8" stroke-width="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke="#64748B" stroke-width="1" opacity=".5"/></svg>`,
-  iconPlus: `<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="plusGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34D399"/><stop offset="100%" stop-color="#047857"/></linearGradient><filter id="ps"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.4"/></filter></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#plusGrad)" filter="url(#ps)"/><path d="M7 13l4 4 6-8" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  iconMinus: `<svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="minusGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#F87171"/><stop offset="100%" stop-color="#991B1B"/></linearGradient><filter id="ms"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.4"/></filter></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#minusGrad)" filter="url(#ms)"/><path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>`
+  
+  // НОВЫЕ ИКОНКИ (Скругленные прямоугольники с градиентом и свечением)
+  iconPlus: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <defs>
+      <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#67E8F9" />
+        <stop offset="100%" stop-color="#3B82F6" />
+      </linearGradient>
+      <filter id="blueGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#38BDF8" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <g fill="url(#blueGrad)" filter="url(#blueGlow)">
+      <rect x="9" y="3" width="6" height="18" rx="3" />
+      <rect x="3" y="9" width="18" height="6" rx="3" />
+    </g>
+  </svg>`,
+  
+  iconMinus: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <defs>
+      <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FCA5A5" />
+        <stop offset="100%" stop-color="#DC2626" />
+      </linearGradient>
+      <filter id="redGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#EF4444" flood-opacity="0.8"/>
+      </filter>
+    </defs>
+    <g fill="url(#redGrad)" filter="url(#redGlow)" transform="translate(12, 12) rotate(45) translate(-12, -12)">
+      <rect x="9" y="3" width="6" height="18" rx="3" />
+      <rect x="3" y="9" width="18" height="6" rx="3" />
+    </g>
+  </svg>`
 };
 
 class ProvablyFair {
@@ -974,8 +914,18 @@ function cashOut(){
 function gameOver(win){
   state.gameActive = false;
   for(let i=0; i<TOTAL; i++){ if(!state.opened.has(i)){ cells[i].className = "cell dead"; cells[i].innerHTML = state.board[i] === 1 ? ICONS.cross : ICONS.star; } }
-  if(win){ setResult(`ВЫ ВЫИГРАЛИ: ${state.currentWin.toFixed(2)} ₽`, "var(--green)"); addHistory(`Выигрыш: +${state.currentWin.toFixed(2)} ₽`, true); } 
-  else { setResult(`ВЗРЫВ! Потеряно: ${state.bet.toFixed(2)} ₽`, "var(--red)"); addHistory(`Проигрыш: -${state.bet.toFixed(2)} ₽`, false); }
+  
+  if(win){ 
+    // ЧИСТЫЙ ВЫИГРЫШ
+    let netWin = state.currentWin - state.bet; 
+    setResult(`ВЫ ВЫИГРАЛИ: ${state.currentWin.toFixed(2)} ₽`, "var(--green)"); 
+    addHistory(`Выигрыш: +${netWin.toFixed(2)} ₽`, true); 
+  } 
+  else { 
+    setResult(`ВЗРЫВ! Потеряно: ${state.bet.toFixed(2)} ₽`, "var(--red)"); 
+    addHistory(`Проигрыш: -${state.bet.toFixed(2)} ₽`, false); 
+  }
+  
   actionBtn.textContent = "НАЧАТЬ"; actionBtn.className = "btn blue"; autoBtn.disabled = true; blockControls(false);
 }
 
