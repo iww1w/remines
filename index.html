@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0F172A">
 <title>MineDodge</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='45' cy='55' r='30' fill='%231E293B'/%3E%3Ccircle cx='35' cy='45' r='10' fill='%23fff' opacity='0.15'/%3E%3Cpath d='M 48 22 Q 65 10, 75 25' stroke='%23A16207' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='75' cy='25' r='6' fill='%23FDE047'/%3E%3C/svg%3E">
+<!-- Новая взрывающаяся бомба -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='45' cy='60' r='38' fill='%231E293B'/%3E%3Ccircle cx='30' cy='45' r='12' fill='%23fff' opacity='0.15'/%3E%3Cpath d='M 50 25 Q 70 10, 80 25' stroke='%23A16207' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M 80 25 L 85 5 L 92 15 L 100 10 L 95 25 L 100 40 L 85 30 L 75 40 Z' fill='%23FDE047'/%3E%3Ccircle cx='85' cy='20' r='12' fill='%23F97316'/%3E%3Ccircle cx='85' cy='20' r='6' fill='%23FFF'/%3E%3C/svg%3E">
 <style>
   :root{
     --bg:#0F172A; --panel:#1E293B; --card:#334155;
@@ -48,16 +49,20 @@
   .card{background:var(--card); border-radius:10px; padding:6px 12px; margin-bottom:8px;}
   .card .title{font-size:11px; font-weight:700; color:var(--gray); letter-spacing:1px;}
 
-  /* Инпуты */
+  /* Инпуты (Общие стили) */
   input[type=number], input[type=text], input[type=password]{
     width:100%; background:var(--bg); border:1px solid var(--card); border-radius:8px;
-    color:var(--white); font-size:16px; font-weight:600; padding:10px;
+    color:var(--white); font-size:16px; font-weight:600; 
+    padding: 12px 14px;
     font-family:inherit; margin-bottom:10px;
   }
   input:focus { outline: none; border-color: var(--blue); }
 
+  /* Убираем стрелки у number */
   input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none; margin:0;}
-  #betInput { background: transparent; border: none; border-radius: 0; padding: 0; margin: 0; font-size:18px; font-weight:800; }
+  
+  /* Специфичный стиль для инпута ставки в игре (без фона и рамок) */
+  #betInput { background: transparent; border: none; border-radius: 0; padding: 0 !important; margin: 0; font-size:18px; font-weight:800; }
 
   .row{display:flex; gap:4px; margin-top:2px;}
   .row .btn { min-height: 28px; padding: 4px; font-size: 12px; }
@@ -142,7 +147,7 @@
   .payment-method.active { border-color: var(--blue); background: rgba(59, 130, 246, 0.1); }
   
   /* Иконка глаза для пароля */
-  .eye-icon { position: absolute; right: 10px; top: 32px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+  .eye-icon { position: absolute; right: 14px; top: 34px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
   .eye-icon:hover { opacity: 1; }
   .eye-icon svg { width: 20px; height: 20px; stroke: var(--white); }
 
@@ -211,8 +216,19 @@
     .grid { grid-template-columns: repeat(5, 1fr); gap: 5px; width: 100%; }
     .cell { width: 100%; height: auto; aspect-ratio: 1/1; border-radius: 10px; }
     .actions { order: 5; margin: 0; gap: 8px; }
-    .bet-card { order: 6; margin: 0; border-radius: 12px; padding: 6px 10px; }
-    .bet-header { margin-bottom: 0; } .row { margin-top: 2px; } .row .btn { min-height: 28px; font-size: 11px; padding: 2px; }
+    
+    /* Компактный блок ставки на телефоне */
+    .bet-card { 
+      order: 6; 
+      margin: 0; 
+      border-radius: 10px; 
+      padding: 4px 8px; /* Уменьшен padding */
+    }
+    .bet-header { margin-bottom: 0; } 
+    #betInput { margin: 0 0 4px 0; } /* Убран лишний отступ */
+    .row { margin-top: 0; } 
+    .row .btn { min-height: 26px; font-size: 11px; padding: 2px; } /* Кнопки стали тоньше */
+    
     .mines-card { order: 7; margin: 0; border-radius: 12px; padding: 8px 10px; }
     .info { order: 8; margin: 0; border-radius: 12px; padding: 10px; display: flex; flex-direction: row; gap: 10px;}
     .info-left { flex: 1; } .info-right { flex: 1; }
@@ -222,16 +238,13 @@
     .actions .btn { min-height: 44px; font-size: 15px; border-radius: 10px; padding: 8px 4px; }
     .actions .auto { flex: 0 0 70px; font-size: 13px; }
     
-    /* Увеличенный прямоугольник за балансом на телефоне */
-    .balance-wrapper {
-      background: var(--bg);
-      padding: 6px 12px;
-      border-radius: 10px;
-      min-width: 120px;
-    }
-    
     .btn { min-height: 40px; font-size: 13px; }
-    input[type=number] { font-size: 18px; padding: 2px 0; }
+    
+    /* Убрали сброс padding для input, теперь все поля имеют одинаковые отступы */
+    .modal input[type=number], .modal input[type=text], .modal input[type=password] {
+       padding: 12px 14px;
+       font-size: 16px;
+    }
   }
 
   @media (max-width:380px){
@@ -381,7 +394,6 @@
       <button class="btn" onclick="closeModal()">Отмена</button>
       <button class="btn blue" id="authSubmitBtn" onclick="doAuth()">Войти</button>
     </div>
-    <!-- Текстовая кнопка переключения (как в вашем примере) -->
     <div id="authSwitch">Нет аккаунта? <span class="link-blue" onclick="switchAuthMode()">Зарегистрироваться</span></div>
   </div>
 
@@ -446,7 +458,7 @@
     </div>
   </div>
 
-  <!-- Рефералка (Добавлено копирование) -->
+  <!-- Рефералка -->
   <div class="modal" id="modalReferral" style="display: none;">
     <h2>Реферальная система</h2>
     <p style="font-size:14px; margin-bottom:15px; color:var(--gray);">Приглашайте друзей и получайте 10% от их выигрышей!</p>
