@@ -129,7 +129,6 @@
   .cell:active:not(.dead):not(.safe){transform:translateY(1px) scale(.95);}
   .cell svg{width:100%; height:100%; display:block; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;}
   
-  /* Открытая безопасная ячейка (Алмаз) - Синий фон */
   .cell.safe {
       background: linear-gradient(180deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.8) 100%);
       border-color: #38BDF8;
@@ -137,7 +136,6 @@
       cursor: default;
   }
   
-  /* Открытая ячейка с миной - Красный фон */
   .cell.dead {
       background: linear-gradient(180deg, rgba(127, 29, 29, 0.5) 0%, rgba(69, 10, 10, 0.9) 100%);
       border-color: #EF4444;
@@ -630,6 +628,11 @@ function togglePassword() {
 
 document.getElementById('btnAuth').addEventListener('click', () => {
   if (currentUser) {
+    // ЗАЩИТА: Нельзя выйти во время игры
+    if (state.gameActive) {
+      showToast("Нельзя выйти из аккаунта во время игры!", "warning");
+      return;
+    }
     openModal('modalLogout');
   } else {
     openModal('modalAuth');
@@ -662,6 +665,12 @@ function doAuth() {
 }
 
 function doLogout() {
+  // Дополнительная защита прямо в функции выхода
+  if (state.gameActive) {
+    showToast("Нельзя выйти из аккаунта во время игры!", "warning");
+    closeModal();
+    return;
+  }
   localStorage.removeItem('minedodge_user');
   currentUser = null;
   updateAuthUI();
